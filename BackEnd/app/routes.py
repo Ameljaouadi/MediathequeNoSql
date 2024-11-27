@@ -9,9 +9,9 @@ db = client['mediaDB']
 # Créer un Blueprint pour les routes
 abonne_bp = Blueprint('abonne', __name__)
 
-@app.route('/AddAbonnee', methods=['POST'])
+@abonne_bp.route('/AddAbonnee', methods=['POST'])
 def create_abonne():
-      data = {
+    data = {
         "nom": request.form.get("nom"),
         "prenom": request.form.get("prenom"),
         "email": request.form.get("email"),
@@ -74,73 +74,3 @@ def delete_abonne(email):
 
 
 
-# Routes pour Documents
-
-# @main.route('/documents', methods=['POST'])
-# def add_document():
-#     data = request.json
-#     document = {
-#         'title': data['title'],
-#         'author': data['author'],
-#         'genre': data['genre'],
-#         'available': data['available'],
-#         'date_added': datetime.now()
-#     }
-#     db.documents.insert_one(document)
-#     return jsonify({"message": "Document ajouté avec succès"}), 201
-
-
-# @main.route('/documents/<title>', methods=['GET'])
-# def get_document(title):
-#     document = db.documents.find_one({'title': title})
-#     if not document:
-#         return jsonify({"message": "Document non trouvé"}), 404
-#     document['_id'] = str(document['_id'])  # Convertir ObjectId en string
-#     return jsonify(document)
-
-
-# @main.route('/documents/<title>/availability', methods=['PUT'])
-# def update_document_availability(title):
-#     data = request.json
-#     available = data.get('available')
-#     result = db.documents.update_one({'title': title}, {'$set': {'available': available}})
-#     if result.matched_count == 0:
-#         return jsonify({"message": "Document non trouvé"}), 404
-#     return jsonify({"message": "Disponibilité mise à jour avec succès"}), 200
-
-
-# Routes pour Loans
-
-# @main.route('/loans', methods=['POST'])
-# def add_loan():
-#     data = request.json
-#     loan = {
-#         'subscriber_email': data['subscriber_email'],
-#         'document_title': data['document_title'],
-#         'loan_date': datetime.strptime(data['loan_date'], "%Y-%m-%d"),
-#         'return_date': data.get('return_date')
-#     }
-#     db.loans.insert_one(loan)
-#     return jsonify({"message": "Emprunt ajouté avec succès"}), 201
-
-
-# @main.route('/loans/<email>', methods=['GET'])
-# def get_loans_by_email(email):
-#     loans = db.loans.find({'subscriber_email': email})
-#     result = []
-#     for loan in loans:
-#         loan['_id'] = str(loan['_id'])  # Convertir ObjectId en string
-#         result.append(loan)
-#     return jsonify(result)
-
-
-# @main.route('/loans/return', methods=['PUT'])
-# def mark_loan_returned():
-#     data = request.json
-#     result = db.loans.update_one(
-#         {'subscriber_email': data['subscriber_email'], 'document_title': data['document_title']},
-#         {'$set': {'return_date': datetime.now()}}
-#     )
-#     if result.matched_count == 0:
-#         return jsonify({"message": "Emprunt non trouvé"}), 404
-#     return jsonify({"message": "Document marqué comme retourné"}), 200

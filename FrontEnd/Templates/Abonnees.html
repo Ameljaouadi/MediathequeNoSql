@@ -76,12 +76,7 @@
                     </button>
                     <form id="deleteForm-{{ abonne.email }}" action="/delete_abonne/{{ abonne.email }}" method="POST" style="display:none;">
                     </form>
-                      <!-- <form action="{{ url_for('delete_abonne', email=abonne.email) }}" method="POST">                      
-                          <input type="hidden" name="email" value="{{ abonne.email }}">
-                         <button class="btn btn-danger btn-sm delete-btn" type="submit" >
-                           <i class="fas fa-trash"></i>
-                         </button>
-                      </form> -->
+                     
                     </td>
                   </tr>
                   {% endfor %}
@@ -93,12 +88,13 @@
         </div>
     </div>
 
+
     
 
 </div>
  
     
-   
+   <!---->
     
    
 
@@ -130,3 +126,5 @@
 
 </body>
 </html>
+
+
