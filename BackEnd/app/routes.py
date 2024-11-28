@@ -72,5 +72,19 @@ def delete_abonne(email):
     db.abonne.delete_one({"email": email})
     return jsonify({"message": "Abonné supprimé avec succès !"}), 200
 
+@abonne_bp.route('/abonne/delete', methods=['DELETE'])
+def delete_all():
+    try:
+        # Suppression de tous les abonnés dans la collection
+        result = db.abonne.delete_many({})
+
+        # Vérifier si des abonnés ont été supprimés
+        if result.deleted_count > 0:
+            return jsonify({"message": f"{result.deleted_count} abonnés supprimés avec succès !"}), 200
+        else:
+            return jsonify({"message": "Aucun abonné trouvé à supprimer."}), 404
+
+    except Exception as e:
+        return jsonify({"error": f"Erreur lors de la suppression des abonnés: {str(e)}"}), 500
 
 

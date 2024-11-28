@@ -15,18 +15,83 @@
   />
 </head>
 <body class="bg-light">
+  <div class="dashbord-menu d-flex">
 
-  <div>
-    {% include 'Menu.html' %}
-    
-   
-</div>
+          <div>
+            {% include 'SideBar.html' %}
+            
+          
+        </div>
+        <div class="main-content flex-grow-1">
+          <div class="container-fluid list-aboonnes mt-3">
+            <div class="content pt-4">
+              <h2 class="text-center mb-4">Liste des Documents</h2>
+            
   
+                      <!-- Message de succès -->
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  <div class="alert alert-success">
+                    {{ messages[0][1] }}
+                  </div>
+                {% endif %}
+              {% endwith %}
+  
+  
+              <div class="table-container" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-striped table-bordered">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Titre</th>
+                      <th>Auteur</th>
+                      <th>Genre</th>
+                      
+                      <th>Date Publication</th>
+                      <th>Disponibilité</th>
+                      <th>Emprunté par</th>
+                      <th>Actions</th>
+  
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for abonne in abonnes %}
+                    <tr>
+                      <td >{{ abonne.nom }}</td>
+                      <td >{{ abonne.prenom }}</td>
+                      <td>{{ abonne.email }}</td>
+                      <td>{{ abonne.adresse }}</td>
+                      <td>{{ abonne.date_inscription if abonne.date_inscription else '-' }}</td>
+                      <td>{{ abonne.liste_emprunt_cours if abonne.liste_emprunt_cours else '-' }}</td>
+                      <td>{{ abonne.historique_emprunt if abonne.historique_emprunt else '-' }}</td>
+  
+                      <td>
+                        <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ abonne.email }}">
+                          <i class="fas fa-edit"></i>
+                        </button>
+                        <button
+                        class="btn btn-danger btn-sm"
+                        onclick="confirmDeletion('{{ abonne.email }}')"
+                        type="button"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                      <form id="deleteForm-{{ abonne.email }}" action="/delete_abonne/{{ abonne.email }}" method="POST" style="display:none;">
+                      </form>
+                       
+                      </td>
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+  
+          </div>
 
-  <!-- Bootstrap 5 JS -->
+        </div>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-  
-  <!-- SweetAlert2 for alerts -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   
 </body>

@@ -57,6 +57,37 @@ def delete_abonne(email):
 
     # Rediriger vers la liste des abonnés après suppression
     return redirect(url_for('abonnees'))
+
+@app.route('/update_abonne/<email>', methods=['POST'])
+def update_abonne(email):
+    nom = request.form.get('nom')
+    prenom = request.form.get('prenom')
+    adresse = request.form.get('adresse')
+    liste_emprunt_cours = request.form.get('liste_emprunt_cours')
+    historique_emprunt = request.form.get('historique_emprunt')
+    date_inscription = request.form.get('date_inscription')
+
+    abonne = db.abonne.find_one({"email": email})
+    
+    if not abonne:
+        return jsonify({"error": "Abonné introuvable"}), 404
+
+    db.abonne.update_one(
+        {"email": email},
+        {"$set": {
+            "nom": nom,
+            "prenom": prenom,
+            "adresse": adresse,
+            "liste_emprunt_cours": liste_emprunt_cours,
+            "historique_emprunt": historique_emprunt,
+            "date_inscription": date_inscription
+        }}
+    )
+
+    return redirect(url_for('abonnees'))  # Redirige vers la liste des abonnés
+
+
+
 @app.route('/catalogues')
 def catalogues():
     return render_template('Catalogue.html') 

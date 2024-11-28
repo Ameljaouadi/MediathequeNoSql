@@ -55,38 +55,63 @@
                 <tbody>
                   {% for abonne in abonnes %}
                   <tr>
-                    <td >{{ abonne.nom }}</td>
-                    <td >{{ abonne.prenom }}</td>
+                    <td>{{ abonne.nom }}</td>
+                    <td>{{ abonne.prenom }}</td>
                     <td>{{ abonne.email }}</td>
                     <td>{{ abonne.adresse }}</td>
                     <td>{{ abonne.date_inscription if abonne.date_inscription else '-' }}</td>
                     <td>{{ abonne.liste_emprunt_cours if abonne.liste_emprunt_cours else '-' }}</td>
                     <td>{{ abonne.historique_emprunt if abonne.historique_emprunt else '-' }}</td>
-
                     <td>
-                      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editAbonneModal">
+                      <button class="btn btn-warning btn-sm" data-bs-toggle="modal" data-bs-target="#editModal{{ abonne.email }}">
                         <i class="fas fa-edit"></i>
                       </button>
                       <button
-                      class="btn btn-danger btn-sm"
-                      onclick="confirmDeletion('{{ abonne.email }}')"
-                      type="button"
-                    >
-                      <i class="fas fa-trash"></i>
-                    </button>
-                    <form id="deleteForm-{{ abonne.email }}" action="/delete_abonne/{{ abonne.email }}" method="POST" style="display:none;">
-                    </form>
-                     
+                        class="btn btn-danger btn-sm"
+                        onclick="confirmDeletion('{{ abonne.email }}')"
+                        type="button"
+                      >
+                        <i class="fas fa-trash"></i>
+                      </button>
+                      <form id="deleteForm-{{ abonne.email }}" action="/delete_abonne/{{ abonne.email }}" method="POST" style="display:none;">
+                      </form>
                     </td>
                   </tr>
+                
+                  <!-- Modal pour modifier l'abonné -->
+                  <div class="modal fade" id="editModal{{ abonne.email }}" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title">Modifier l'abonné</h5>
+                          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                          <form id="editAbonneForm" method="POST" action="/update_abonne/{{ abonne.email }}">
+                            <div class="mb-3">
+                              <label for="nom" class="form-label">Nom</label>
+                              <input type="text" class="form-control" id="nom" name="nom" value="{{ abonne.nom }}" required>
+                            </div>
+                            <div class="mb-3">
+                              <label for="prenom" class="form-label">Prénom</label>
+                              <input type="text" class="form-control" id="prenom" name="prenom" value="{{ abonne.prenom }}" required>
+                            </div>
+                            <div class="mb-3">
+                              <label for="adresse" class="form-label">Adresse</label>
+                              <input type="text" class="form-control" id="adresse" name="adresse" value="{{ abonne.adresse }}" required>
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+                              <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                   {% endfor %}
                 </tbody>
-              </table>
-            </div>
-          </div>
-
-        </div>
-    </div>
+                
 
 
     
